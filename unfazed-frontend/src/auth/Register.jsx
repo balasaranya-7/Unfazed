@@ -80,7 +80,7 @@ export const Register = () => {
           client registration API.
         */
         const response = await fetch(
-          'http://localhost:5000/api/auth/register-client',
+          'https://unfazed-3b31.onrender.com/api/auth/register-client',
           {
             method: 'POST',
             headers: {
