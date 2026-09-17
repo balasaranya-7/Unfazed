@@ -1,0 +1,1 @@
+const express=require("express"),c=require("../controllers/publicController");const r=express.Router();r.get("/therapist/:slug",c.getPublicProfile);r.get("/therapist/:slug/availability",c.getOpenSessions);r.post("/therapist/:slug/book",c.bookPublic);module.exports=r;
