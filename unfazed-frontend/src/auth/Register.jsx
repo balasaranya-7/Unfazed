@@ -20,16 +20,9 @@ export const Register = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  const { registerTherapist } = useAuth();
+  const { register } = useAuth();
   const { showToast, updateTherapist } = useData();
 
-  /*
-    Role comes from:
-    /register?role=therapist
-    /register?role=client
-
-    Therapist is the default.
-  */
   const selectedRole =
     searchParams.get('role') === 'client'
       ? 'client'
@@ -75,10 +68,6 @@ export const Register = () => {
 
     try {
       if (isClient) {
-        /*
-          Client registration is handled by the
-          client registration API.
-        */
         const response = await fetch(
           'https://unfazed-3b31.onrender.com/api/auth/register-client',
           {
@@ -90,8 +79,7 @@ export const Register = () => {
               name: formData.name.trim(),
               email: formData.email.trim(),
               password: formData.password,
-              therapistSlug:
-                formData.therapistSlug.trim(),
+              therapistSlug: formData.therapistSlug.trim(),
             }),
           }
         );
@@ -114,15 +102,11 @@ export const Register = () => {
         return;
       }
 
-      /*
-        Existing therapist registration flow
-      */
-      const data = await registerTherapist({
+      const data = await register({
         name: formData.name.trim(),
         email: formData.email.trim(),
         password: formData.password,
-        qualification:
-          formData.qualification.trim(),
+        qualification: formData.qualification.trim(),
       });
 
       if (data?.therapist) {
@@ -151,9 +135,7 @@ export const Register = () => {
   return (
     <div className="min-h-screen bg-vanilla text-midnight font-sans lg:grid lg:grid-cols-2">
 
-      {/* =====================================================
-          LEFT BRANDING PANEL
-      ====================================================== */}
+      {/* LEFT BRANDING PANEL */}
       <motion.section
         initial={{ opacity: 0, x: -25 }}
         animate={{ opacity: 1, x: 0 }}
@@ -186,7 +168,6 @@ export const Register = () => {
 
         {/* Main branding */}
         <div className="relative z-10 max-w-xl space-y-7">
-
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-rosewood/20 border border-rosewood/30 text-blush text-xs font-bold">
             <Sparkles size={13} />
 
@@ -197,7 +178,6 @@ export const Register = () => {
 
           <div>
             <h2 className="font-display text-4xl xl:text-5xl font-extrabold leading-tight tracking-tight">
-
               {isClient ? (
                 <>
                   Create your{' '}
@@ -215,7 +195,6 @@ export const Register = () => {
                   practice space.
                 </>
               )}
-
             </h2>
 
             <p className="mt-5 text-sm leading-7 text-misty max-w-lg">
@@ -227,7 +206,6 @@ export const Register = () => {
 
           {/* Feature list */}
           <div className="space-y-3 text-xs">
-
             <div className="flex items-center gap-3">
               {isClient ? (
                 <Users
@@ -273,7 +251,6 @@ export const Register = () => {
                   : 'Scheduling, documentation & billing'}
               </span>
             </div>
-
           </div>
         </div>
 
@@ -284,20 +261,15 @@ export const Register = () => {
         </p>
       </motion.section>
 
-      {/* =====================================================
-          RIGHT FORM
-      ====================================================== */}
+      {/* RIGHT FORM */}
       <section className="min-h-screen flex items-center justify-center p-6 sm:p-10 lg:p-12 bg-vanilla">
-
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           className="w-full max-w-lg"
         >
-
           {/* Mobile logo */}
           <div className="lg:hidden flex items-center gap-3 mb-8">
-
             <div className="w-11 h-11 rounded-2xl bg-midnight text-vanilla flex items-center justify-center shadow-md">
               <span className="font-display font-black text-2xl text-blush">
                 U
@@ -315,14 +287,11 @@ export const Register = () => {
                   : 'Therapist Practice Hub'}
               </p>
             </div>
-
           </div>
 
           <div className="bg-white rounded-3xl p-7 sm:p-10 border border-misty/30 card-shadow shadow-xl">
-
             {/* Header */}
             <div className="mb-7">
-
               <p className="text-xs font-bold uppercase tracking-wider text-rosewood mb-1">
                 {isClient
                   ? 'New client'
@@ -330,21 +299,16 @@ export const Register = () => {
               </p>
 
               <h2 className="text-3xl font-bold font-display text-midnight tracking-tight">
-
                 {isClient
                   ? 'Create Client Account'
                   : 'Create Therapist Account'}
-
               </h2>
 
               <p className="text-xs text-midnight-muted mt-2">
-
                 {isClient
                   ? 'Create your private client account to continue.'
                   : 'Set up your workspace and your branded practice identity.'}
-
               </p>
-
             </div>
 
             {/* Form */}
@@ -352,7 +316,6 @@ export const Register = () => {
               onSubmit={handleSubmit}
               className="space-y-4 text-xs text-midnight"
             >
-
               {/* Full Name */}
               <div>
                 <label className="block font-bold mb-1.5">
@@ -413,7 +376,7 @@ export const Register = () => {
                 </div>
               </div>
 
-              {/* Therapist-specific qualification */}
+              {/* Therapist qualification */}
               {!isClient && (
                 <div>
                   <label className="block font-bold mb-1.5">
@@ -550,12 +513,10 @@ export const Register = () => {
 
                 <ArrowRight size={14} />
               </button>
-
             </form>
 
             {/* Sign in */}
             <div className="pt-5 mt-6 border-t border-misty/20 text-center text-xs text-midnight-muted">
-
               Already have an account?{' '}
 
               <Link
@@ -564,9 +525,7 @@ export const Register = () => {
               >
                 Sign in
               </Link>
-
             </div>
-
           </div>
         </motion.div>
       </section>
