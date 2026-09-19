@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-import {
-  useNavigate,
-  Link,
-  useSearchParams,
-} from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Stethoscope,
@@ -15,8 +11,6 @@ import {
   HeartHandshake,
   User,
   Users,
-  Eye,
-  EyeOff,
   CheckCircle2,
 } from 'lucide-react';
 
@@ -36,10 +30,6 @@ export const Register = () => {
       : 'therapist';
 
   const isClient = selectedRole === 'client';
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] =
-    useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -90,8 +80,7 @@ export const Register = () => {
               name: formData.name.trim(),
               email: formData.email.trim(),
               password: formData.password,
-              therapistSlug:
-                formData.therapistSlug.trim(),
+              therapistSlug: formData.therapistSlug.trim(),
             }),
           }
         );
@@ -118,8 +107,7 @@ export const Register = () => {
         name: formData.name.trim(),
         email: formData.email.trim(),
         password: formData.password,
-        qualification:
-          formData.qualification.trim(),
+        qualification: formData.qualification.trim(),
       });
 
       if (data?.therapist) {
@@ -127,7 +115,9 @@ export const Register = () => {
       }
 
       showToast(
-        `${data?.therapist?.name || formData.name}'s practice account created successfully!`
+        `${
+          data?.therapist?.name || formData.name
+        }'s practice account created successfully!`
       );
 
       navigate('/therapist/dashboard');
@@ -144,28 +134,33 @@ export const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-vanilla text-midnight font-sans lg:flex">
+    <div className="min-h-screen bg-vanilla text-midnight font-sans lg:grid lg:grid-cols-2">
 
-      {/* ================= LEFT BRAND PANEL ================= */}
+      {/* =====================================================
+          LEFT BRAND PANEL
+      ===================================================== */}
       <motion.section
-        initial={{ opacity: 0, x: -30 }}
+        initial={{ opacity: 0, x: -35 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.65 }}
-        className="hidden lg:flex lg:w-[46%] relative overflow-hidden bg-midnight text-vanilla px-12 xl:px-16 py-12 flex-col justify-between"
+        className="hidden lg:flex relative overflow-hidden bg-midnight text-vanilla p-12 xl:p-16 flex-col justify-between"
       >
         <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-rosewood/20 blur-3xl" />
+
         <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-blush/10 blur-3xl" />
+
+        <div className="absolute top-1/3 right-[-100px] w-72 h-72 rounded-full border border-blush/10" />
 
         {/* Logo */}
         <div className="relative z-10 flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blush to-rosewood flex items-center justify-center shadow-xl">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blush to-rosewood flex items-center justify-center shadow-lg">
             <span className="font-display font-black text-2xl text-midnight">
               U
             </span>
           </div>
 
           <div>
-            <h1 className="font-display text-2xl font-extrabold tracking-tight">
+            <h1 className="font-display text-2xl font-extrabold">
               Unfazed
             </h1>
 
@@ -180,7 +175,7 @@ export const Register = () => {
         {/* Main */}
         <div className="relative z-10 max-w-xl">
 
-          <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/5 border border-white/10 text-blush text-[11px] font-bold mb-7">
+          <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/5 border border-white/10 text-blush text-xs font-bold mb-6">
             <Sparkles size={13} />
 
             {isClient
@@ -188,14 +183,16 @@ export const Register = () => {
               : 'Build your practice with clarity.'}
           </div>
 
-          <h2 className="font-display text-5xl xl:text-6xl font-black leading-[1.05] tracking-tight">
+          <h2 className="font-display text-5xl xl:text-6xl font-extrabold leading-[1.05] tracking-tight">
+
             {isClient ? (
               <>
-                Your wellness,
+                Create your
                 <br />
                 <span className="text-blush">
-                  your space.
-                </span>
+                  Unfazed
+                </span>{' '}
+                space.
               </>
             ) : (
               <>
@@ -207,19 +204,20 @@ export const Register = () => {
                 practice.
               </>
             )}
+
           </h2>
 
-          <p className="mt-6 text-sm leading-7 text-misty max-w-md">
+          <p className="mt-6 text-sm leading-7 text-misty max-w-lg">
             {isClient
-              ? 'Create your private client space and keep your sessions, bookings and conversations connected.'
-              : 'Create your professional workspace and bring clients, scheduling, notes and billing together.'}
+              ? 'Create your client account to access sessions, bookings, payments, shared notes and conversations in one private space.'
+              : 'Create your therapist account and manage clients, schedules, notes, payments and your branded practice from one workspace.'}
           </p>
 
-          {/* Feature cards */}
-          <div className="mt-9 grid gap-3 max-w-md">
+          {/* Feature list */}
+          <div className="mt-9 space-y-3 max-w-md">
 
             <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10">
-              <div className="w-10 h-10 rounded-xl bg-rosewood/30 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-blush/10 flex items-center justify-center">
                 {isClient ? (
                   <Users
                     size={18}
@@ -236,20 +234,20 @@ export const Register = () => {
               <div>
                 <p className="text-xs font-bold">
                   {isClient
-                    ? 'Personal wellness portal'
+                    ? 'Personal client portal'
                     : 'Client-first management'}
                 </p>
 
                 <p className="text-[10px] text-misty mt-1">
                   {isClient
-                    ? 'Your own connected client space.'
-                    : 'Keep your practice organised.'}
+                    ? 'Everything you need in one place.'
+                    : 'Keep your practice connected.'}
                 </p>
               </div>
             </div>
 
             <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10">
-              <div className="w-10 h-10 rounded-xl bg-rosewood/30 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-blush/10 flex items-center justify-center">
                 <Award
                   size={18}
                   className="text-blush"
@@ -260,19 +258,19 @@ export const Register = () => {
                 <p className="text-xs font-bold">
                   {isClient
                     ? 'Sessions & shared reflections'
-                    : 'Professional profile'}
+                    : 'Professional practice identity'}
                 </p>
 
                 <p className="text-[10px] text-misty mt-1">
                   {isClient
                     ? 'Stay connected with your therapist.'
-                    : 'Build your branded practice identity.'}
+                    : 'Build your branded therapist profile.'}
                 </p>
               </div>
             </div>
 
             <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10">
-              <div className="w-10 h-10 rounded-xl bg-rosewood/30 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-blush/10 flex items-center justify-center">
                 <Stethoscope
                   size={18}
                   className="text-blush"
@@ -287,7 +285,9 @@ export const Register = () => {
                 </p>
 
                 <p className="text-[10px] text-misty mt-1">
-                  One connected experience.
+                  {isClient
+                    ? 'Simple and connected.'
+                    : 'Everything your practice needs.'}
                 </p>
               </div>
             </div>
@@ -302,19 +302,25 @@ export const Register = () => {
         </p>
       </motion.section>
 
-      {/* ================= RIGHT FORM ================= */}
-      <section className="flex-1 min-h-screen flex items-center justify-center px-5 py-8 sm:px-8 lg:px-12">
+      {/* =====================================================
+          RIGHT REGISTER
+      ===================================================== */}
+      <section className="min-h-screen flex items-center justify-center p-5 sm:p-8 lg:p-12 bg-vanilla relative overflow-hidden">
+
+        <div className="lg:hidden absolute -top-32 -right-32 w-80 h-80 rounded-full bg-blush/20 blur-3xl" />
+
+        <div className="lg:hidden absolute -bottom-32 -left-32 w-80 h-80 rounded-full bg-sunwashed/30 blur-3xl" />
 
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="w-full max-w-[500px]"
+          className="relative z-10 w-full max-w-md"
         >
 
           {/* Mobile logo */}
-          <div className="lg:hidden flex items-center gap-3 mb-8">
-            <div className="w-11 h-11 rounded-2xl bg-midnight flex items-center justify-center shadow-md">
+          <div className="lg:hidden flex items-center gap-3 mb-7">
+            <div className="w-11 h-11 rounded-2xl bg-midnight flex items-center justify-center shadow-lg">
               <span className="font-display font-black text-2xl text-blush">
                 U
               </span>
@@ -334,58 +340,71 @@ export const Register = () => {
           </div>
 
           {/* Card */}
-          <div className="bg-white rounded-[2rem] p-7 sm:p-9 border border-misty/30 shadow-[0_20px_70px_rgba(47,68,84,0.12)]">
+          <div className="bg-white rounded-[2rem] p-6 sm:p-9 border border-misty/30 shadow-[0_25px_70px_rgba(47,68,84,0.12)]">
+
+            {/* Icon */}
+            <div className="w-12 h-12 rounded-2xl bg-rosewood/10 flex items-center justify-center mb-5">
+              {isClient ? (
+                <User
+                  size={21}
+                  className="text-rosewood"
+                />
+              ) : (
+                <Stethoscope
+                  size={21}
+                  className="text-rosewood"
+                />
+              )}
+            </div>
 
             {/* Header */}
             <div className="mb-7">
-              <div className="w-11 h-11 rounded-2xl bg-rosewood/10 flex items-center justify-center mb-5">
-                {isClient ? (
-                  <User
-                    size={19}
-                    className="text-rosewood"
-                  />
-                ) : (
-                  <Stethoscope
-                    size={19}
-                    className="text-rosewood"
-                  />
-                )}
-              </div>
-
-              <p className="text-[11px] uppercase tracking-[0.18em] font-extrabold text-rosewood">
+              <p className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-rosewood">
                 {isClient
                   ? 'New client'
                   : 'New practice'}
               </p>
 
-              <h2 className="font-display text-3xl sm:text-4xl font-black tracking-tight mt-1">
+              <h2 className="mt-2 text-3xl sm:text-4xl font-display font-extrabold tracking-tight">
                 {isClient
-                  ? 'Create your account'
+                  ? 'Create account'
                   : 'Create your practice'}
               </h2>
 
-              <p className="text-xs text-midnight-muted mt-2">
+              <p className="text-xs text-midnight-muted mt-2 leading-5">
                 {isClient
-                  ? 'Set up your private client space.'
-                  : 'Set up your professional Unfazed workspace.'}
+                  ? 'Create your private client account to continue.'
+                  : 'Set up your therapist workspace in a few simple steps.'}
               </p>
             </div>
 
+            {/* Progress indicator */}
+            <div className="flex items-center gap-2 mb-7">
+
+              <div className="h-1.5 flex-1 rounded-full bg-rosewood" />
+
+              <div className="h-1.5 flex-1 rounded-full bg-rosewood/20" />
+
+              <div className="h-1.5 flex-1 rounded-full bg-rosewood/20" />
+
+            </div>
+
+            {/* Form */}
             <form
               onSubmit={handleSubmit}
-              className="space-y-4"
+              className="space-y-5 text-xs"
             >
 
               {/* Name */}
               <div>
-                <label className="block text-[11px] font-extrabold uppercase tracking-wide mb-2 text-midnight-muted">
+                <label className="block font-bold mb-2">
                   Full name
                 </label>
 
                 <div className="relative group">
                   <User
                     size={17}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-midnight-muted group-focus-within:text-rosewood transition-colors"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-midnight-muted group-focus-within:text-rosewood transition"
                   />
 
                   <input
@@ -403,21 +422,21 @@ export const Register = () => {
                         e.target.value
                       )
                     }
-                    className="w-full h-12 pl-11 pr-4 rounded-2xl border border-misty/40 bg-white text-sm outline-none transition-all focus:border-rosewood focus:ring-4 focus:ring-rosewood/10 placeholder:text-midnight-muted/50"
+                    className="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-misty/40 bg-vanilla/30 focus:outline-none focus:border-rosewood focus:ring-4 focus:ring-rosewood/10 transition"
                   />
                 </div>
               </div>
 
               {/* Email */}
               <div>
-                <label className="block text-[11px] font-extrabold uppercase tracking-wide mb-2 text-midnight-muted">
+                <label className="block font-bold mb-2">
                   Email address
                 </label>
 
                 <div className="relative group">
                   <Mail
                     size={17}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-midnight-muted group-focus-within:text-rosewood transition-colors"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-midnight-muted group-focus-within:text-rosewood transition"
                   />
 
                   <input
@@ -431,7 +450,7 @@ export const Register = () => {
                         e.target.value
                       )
                     }
-                    className="w-full h-12 pl-11 pr-4 rounded-2xl border border-misty/40 bg-white text-sm outline-none transition-all focus:border-rosewood focus:ring-4 focus:ring-rosewood/10 placeholder:text-midnight-muted/50"
+                    className="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-misty/40 bg-vanilla/30 focus:outline-none focus:border-rosewood focus:ring-4 focus:ring-rosewood/10 transition"
                   />
                 </div>
               </div>
@@ -439,14 +458,14 @@ export const Register = () => {
               {/* Qualification */}
               {!isClient && (
                 <div>
-                  <label className="block text-[11px] font-extrabold uppercase tracking-wide mb-2 text-midnight-muted">
+                  <label className="block font-bold mb-2">
                     Qualification
                   </label>
 
                   <div className="relative group">
                     <Award
                       size={17}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 text-midnight-muted group-focus-within:text-rosewood transition-colors"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-midnight-muted group-focus-within:text-rosewood transition"
                     />
 
                     <input
@@ -459,23 +478,23 @@ export const Register = () => {
                           e.target.value
                         )
                       }
-                      className="w-full h-12 pl-11 pr-4 rounded-2xl border border-misty/40 bg-white text-sm outline-none transition-all focus:border-rosewood focus:ring-4 focus:ring-rosewood/10 placeholder:text-midnight-muted/50"
+                      className="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-misty/40 bg-vanilla/30 focus:outline-none focus:border-rosewood focus:ring-4 focus:ring-rosewood/10 transition"
                     />
                   </div>
                 </div>
               )}
 
-              {/* Therapist branded link */}
+              {/* Therapist slug */}
               {isClient && (
                 <div>
-                  <label className="block text-[11px] font-extrabold uppercase tracking-wide mb-2 text-midnight-muted">
+                  <label className="block font-bold mb-2">
                     Therapist branded link
                   </label>
 
                   <div className="relative group">
                     <Stethoscope
                       size={17}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 text-midnight-muted group-focus-within:text-rosewood transition-colors"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-midnight-muted group-focus-within:text-rosewood transition"
                     />
 
                     <input
@@ -489,11 +508,11 @@ export const Register = () => {
                           e.target.value
                         )
                       }
-                      className="w-full h-12 pl-11 pr-4 rounded-2xl border border-misty/40 bg-white text-sm outline-none transition-all focus:border-rosewood focus:ring-4 focus:ring-rosewood/10 placeholder:text-midnight-muted/50"
+                      className="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-misty/40 bg-vanilla/30 focus:outline-none focus:border-rosewood focus:ring-4 focus:ring-rosewood/10 transition"
                     />
                   </div>
 
-                  <p className="text-[10px] text-midnight-muted mt-1.5">
+                  <p className="text-[10px] text-midnight-muted mt-2">
                     Enter the branded link shared by your therapist.
                   </p>
                 </div>
@@ -501,22 +520,18 @@ export const Register = () => {
 
               {/* Password */}
               <div>
-                <label className="block text-[11px] font-extrabold uppercase tracking-wide mb-2 text-midnight-muted">
+                <label className="block font-bold mb-2">
                   Password
                 </label>
 
                 <div className="relative group">
                   <Lock
                     size={17}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-midnight-muted group-focus-within:text-rosewood transition-colors"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-midnight-muted group-focus-within:text-rosewood transition"
                   />
 
                   <input
-                    type={
-                      showPassword
-                        ? 'text'
-                        : 'password'
-                    }
+                    type="password"
                     required
                     minLength={6}
                     placeholder="At least 6 characters"
@@ -527,45 +542,25 @@ export const Register = () => {
                         e.target.value
                       )
                     }
-                    className="w-full h-12 pl-11 pr-12 rounded-2xl border border-misty/40 bg-white text-sm outline-none transition-all focus:border-rosewood focus:ring-4 focus:ring-rosewood/10 placeholder:text-midnight-muted/50"
+                    className="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-misty/40 bg-vanilla/30 focus:outline-none focus:border-rosewood focus:ring-4 focus:ring-rosewood/10 transition font-mono"
                   />
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setShowPassword(
-                        (prev) => !prev
-                      )
-                    }
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-midnight-muted hover:text-rosewood transition"
-                  >
-                    {showPassword ? (
-                      <EyeOff size={17} />
-                    ) : (
-                      <Eye size={17} />
-                    )}
-                  </button>
                 </div>
               </div>
 
               {/* Confirm */}
               <div>
-                <label className="block text-[11px] font-extrabold uppercase tracking-wide mb-2 text-midnight-muted">
+                <label className="block font-bold mb-2">
                   Confirm password
                 </label>
 
                 <div className="relative group">
                   <Lock
                     size={17}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-midnight-muted group-focus-within:text-rosewood transition-colors"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-midnight-muted group-focus-within:text-rosewood transition"
                   />
 
                   <input
-                    type={
-                      showConfirmPassword
-                        ? 'text'
-                        : 'password'
-                    }
+                    type="password"
                     required
                     minLength={6}
                     placeholder="Re-enter your password"
@@ -576,24 +571,8 @@ export const Register = () => {
                         e.target.value
                       )
                     }
-                    className="w-full h-12 pl-11 pr-12 rounded-2xl border border-misty/40 bg-white text-sm outline-none transition-all focus:border-rosewood focus:ring-4 focus:ring-rosewood/10 placeholder:text-midnight-muted/50"
+                    className="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-misty/40 bg-vanilla/30 focus:outline-none focus:border-rosewood focus:ring-4 focus:ring-rosewood/10 transition font-mono"
                   />
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setShowConfirmPassword(
-                        (prev) => !prev
-                      )
-                    }
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-midnight-muted hover:text-rosewood transition"
-                  >
-                    {showConfirmPassword ? (
-                      <EyeOff size={17} />
-                    ) : (
-                      <Eye size={17} />
-                    )}
-                  </button>
                 </div>
               </div>
 
@@ -601,7 +580,7 @@ export const Register = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="group w-full h-13 rounded-2xl bg-rosewood hover:bg-rosewood-hover disabled:opacity-60 text-white font-extrabold text-xs transition-all shadow-lg shadow-rosewood/20 flex items-center justify-center gap-2 mt-2"
+                className="group w-full py-4 rounded-2xl bg-rosewood hover:bg-rosewood-hover disabled:opacity-60 text-white font-bold text-xs transition-all duration-200 shadow-lg shadow-rosewood/20 flex items-center justify-center gap-2 mt-2"
               >
                 <span>
                   {loading
@@ -616,31 +595,29 @@ export const Register = () => {
                   className="group-hover:translate-x-1 transition-transform"
                 />
               </button>
-
             </form>
 
-            {/* Security */}
-            <div className="flex items-center justify-center gap-2 mt-5 text-[10px] text-midnight-muted">
-              <CheckCircle2
-                size={13}
-                className="text-rosewood"
-              />
-              Your account details are securely handled.
-            </div>
-
             {/* Login */}
-            <div className="pt-6 mt-6 border-t border-misty/20 text-center text-xs text-midnight-muted">
-              Already have an account?{' '}
+            <div className="pt-6 mt-6 border-t border-misty/20 text-center">
+              <p className="text-xs text-midnight-muted">
+                Already have an account?
+              </p>
 
               <Link
                 to={`/login?role=${selectedRole}`}
-                className="font-extrabold text-rosewood hover:underline"
+                className="inline-flex items-center gap-1 mt-1.5 font-bold text-rosewood hover:underline text-xs"
               >
                 Sign in
+                <ArrowRight size={12} />
               </Link>
             </div>
 
           </div>
+
+          <p className="text-center text-[10px] text-midnight-muted mt-5">
+            A simpler, calmer way to manage your Unfazed experience.
+          </p>
+
         </motion.div>
       </section>
     </div>
