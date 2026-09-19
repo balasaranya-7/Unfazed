@@ -12,9 +12,17 @@ const analyticsRoutes = require("./routes/analyticsRoutes");
 const publicRoutes = require("./routes/publicRoutes");
 const leadRoutes = require("./routes/leadRoutes");
 
-const { notFound, errorHandler } = require("./middleware/errorHandler");
+const {
+  notFound,
+  errorHandler,
+} = require("./middleware/errorHandler");
 
 const app = express();
+
+
+// ======================================================
+// CORS CONFIGURATION
+// ======================================================
 
 const envOrigins = (process.env.FRONTEND_URL || "")
   .split(",")
@@ -33,7 +41,7 @@ app.use(
   cors({
     origin: (origin, callback) => {
       // Allow requests without an Origin header
-      // such as Postman/server-to-server requests.
+      // such as Postman or server-to-server requests.
       if (!origin) {
         return callback(null, true);
       }
@@ -44,30 +52,74 @@ app.use(
 
       console.log("CORS blocked origin:", origin);
 
-      return callback(new Error("CORS origin not allowed"));
+      return callback(
+        new Error("CORS origin not allowed")
+      );
     },
+
     credentials: true,
-    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+
+    methods: [
+      "GET",
+      "HEAD",
+      "PUT",
+      "PATCH",
+      "POST",
+      "DELETE",
+      "OPTIONS",
+    ],
+
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+    ],
+
     optionsSuccessStatus: 204,
   })
 );
 
-// Explicitly handle CORS preflight requests.
-app.options("*", cors());
 
+// ======================================================
+// BODY PARSERS
+// ======================================================
+
+// Razorpay webhook must receive raw body
+// for signature verification.
 app.use(
   "/api/payments/webhook",
-  express.raw({ type: "application/json" })
+  express.raw({
+    type: "application/json",
+  })
 );
 
-app.use(express.json({ limit: "2mb" }));
-app.use(express.urlencoded({ extended: true }));
+app.use(
+  express.json({
+    limit: "2mb",
+  })
+);
+
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
+
+// ======================================================
+// STATIC UPLOADS
+// ======================================================
 
 app.use(
   "/uploads",
-  express.static(path.join(process.cwd(), "uploads"))
+  express.static(
+    path.join(process.cwd(), "uploads")
+  )
 );
+
+
+// ======================================================
+// HEALTH CHECK
+// ======================================================
 
 app.get("/", (req, res) => {
   res.json({
@@ -76,17 +128,108 @@ app.get("/", (req, res) => {
   });
 });
 
-app.use("/api", publicRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api/clients", clientRoutes);
-app.use("/api/therapists", therapistRoutes);
-app.use("/api/scheduling", schedulingRoutes);
-app.use("/api/payments", paymentRoutes);
-app.use("/api/notes", noteRoutes);
-app.use("/api/analytics", analyticsRoutes);
-app.use("/api/leads", leadRoutes);
+
+// ======================================================
+// PUBLIC ROUTES
+// ======================================================
+
+app.use(
+  "/api",
+  publicRoutes
+);
+
+
+// ======================================================
+// AUTH
+// ======================================================
+
+app.use(
+  "/api/auth",
+  authRoutes
+);
+
+
+// ======================================================
+// CLIENTS
+// ======================================================
+
+app.use(
+  "/api/clients",
+  clientRoutes
+);
+
+
+// ======================================================
+// THERAPISTS
+// ======================================================
+
+app.use(
+  "/api/therapists",
+  therapistRoutes
+);
+
+
+// ======================================================
+// SCHEDULING
+// ======================================================
+
+app.use(
+  "/api/scheduling",
+  schedulingRoutes
+);
+
+
+// ======================================================
+// PAYMENTS
+// ======================================================
+
+app.use(
+  "/api/payments",
+  paymentRoutes
+);
+
+
+// ======================================================
+// CLINICAL NOTES
+// ======================================================
+
+app.use(
+  "/api/notes",
+  noteRoutes
+);
+
+
+// ======================================================
+// ANALYTICS
+// ======================================================
+
+app.use(
+  "/api/analytics",
+  analyticsRoutes
+);
+
+
+// ======================================================
+// LEADS
+// ======================================================
+
+app.use(
+  "/api/leads",
+  leadRoutes
+);
+
+
+// ======================================================
+// ERROR HANDLING
+// ======================================================
 
 app.use(notFound);
+
 app.use(errorHandler);
+
+
+// ======================================================
+// EXPORT
+// ======================================================
 
 module.exports = app;
