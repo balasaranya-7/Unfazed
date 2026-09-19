@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate, Link, useSearchParams } from 'react-router-dom';
+import {
+  useNavigate,
+  Link,
+  useSearchParams,
+} from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Stethoscope,
@@ -11,6 +15,9 @@ import {
   HeartHandshake,
   User,
   Users,
+  Eye,
+  EyeOff,
+  CheckCircle2,
 } from 'lucide-react';
 
 import { useAuth } from '../context/AuthContext';
@@ -29,6 +36,10 @@ export const Register = () => {
       : 'therapist';
 
   const isClient = selectedRole === 'client';
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -79,7 +90,8 @@ export const Register = () => {
               name: formData.name.trim(),
               email: formData.email.trim(),
               password: formData.password,
-              therapistSlug: formData.therapistSlug.trim(),
+              therapistSlug:
+                formData.therapistSlug.trim(),
             }),
           }
         );
@@ -106,7 +118,8 @@ export const Register = () => {
         name: formData.name.trim(),
         email: formData.email.trim(),
         password: formData.password,
-        qualification: formData.qualification.trim(),
+        qualification:
+          formData.qualification.trim(),
       });
 
       if (data?.therapist) {
@@ -114,9 +127,7 @@ export const Register = () => {
       }
 
       showToast(
-        `${
-          data?.therapist?.name || formData.name
-        }'s practice account created successfully!`
+        `${data?.therapist?.name || formData.name}'s practice account created successfully!`
       );
 
       navigate('/therapist/dashboard');
@@ -133,28 +144,28 @@ export const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-vanilla text-midnight font-sans lg:grid lg:grid-cols-2">
+    <div className="min-h-screen bg-vanilla text-midnight font-sans lg:flex">
 
-      {/* LEFT BRANDING PANEL */}
+      {/* ================= LEFT BRAND PANEL ================= */}
       <motion.section
-        initial={{ opacity: 0, x: -25 }}
+        initial={{ opacity: 0, x: -30 }}
         animate={{ opacity: 1, x: 0 }}
-        className="hidden lg:flex relative overflow-hidden bg-midnight text-vanilla p-12 xl:p-16 flex-col justify-between"
+        transition={{ duration: 0.65 }}
+        className="hidden lg:flex lg:w-[46%] relative overflow-hidden bg-midnight text-vanilla px-12 xl:px-16 py-12 flex-col justify-between"
       >
-        <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-rosewood/20 blur-3xl" />
-
-        <div className="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-blush/10 blur-3xl" />
+        <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-rosewood/20 blur-3xl" />
+        <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-blush/10 blur-3xl" />
 
         {/* Logo */}
         <div className="relative z-10 flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blush to-rosewood flex items-center justify-center shadow-lg">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blush to-rosewood flex items-center justify-center shadow-xl">
             <span className="font-display font-black text-2xl text-midnight">
               U
             </span>
           </div>
 
           <div>
-            <h1 className="font-display text-2xl font-extrabold">
+            <h1 className="font-display text-2xl font-extrabold tracking-tight">
               Unfazed
             </h1>
 
@@ -166,9 +177,10 @@ export const Register = () => {
           </div>
         </div>
 
-        {/* Main branding */}
-        <div className="relative z-10 max-w-xl space-y-7">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-rosewood/20 border border-rosewood/30 text-blush text-xs font-bold">
+        {/* Main */}
+        <div className="relative z-10 max-w-xl">
+
+          <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/5 border border-white/10 text-blush text-[11px] font-bold mb-7">
             <Sparkles size={13} />
 
             {isClient
@@ -176,81 +188,110 @@ export const Register = () => {
               : 'Build your practice with clarity.'}
           </div>
 
-          <div>
-            <h2 className="font-display text-4xl xl:text-5xl font-extrabold leading-tight tracking-tight">
-              {isClient ? (
-                <>
-                  Create your{' '}
-                  <span className="text-blush">
-                    Unfazed
-                  </span>{' '}
-                  client space.
-                </>
-              ) : (
-                <>
-                  Start your{' '}
-                  <span className="text-blush">
-                    Unfazed
-                  </span>{' '}
-                  practice space.
-                </>
-              )}
-            </h2>
+          <h2 className="font-display text-5xl xl:text-6xl font-black leading-[1.05] tracking-tight">
+            {isClient ? (
+              <>
+                Your wellness,
+                <br />
+                <span className="text-blush">
+                  your space.
+                </span>
+              </>
+            ) : (
+              <>
+                Start your
+                <br />
+                <span className="text-blush">
+                  Unfazed
+                </span>{' '}
+                practice.
+              </>
+            )}
+          </h2>
 
-            <p className="mt-5 text-sm leading-7 text-misty max-w-lg">
-              {isClient
-                ? 'Create your client account to access your sessions, shared reflections, bookings, payments and conversations in one private space.'
-                : 'Create your therapist account and manage your clients, schedule, notes, payments and branded link from one workspace.'}
-            </p>
-          </div>
+          <p className="mt-6 text-sm leading-7 text-misty max-w-md">
+            {isClient
+              ? 'Create your private client space and keep your sessions, bookings and conversations connected.'
+              : 'Create your professional workspace and bring clients, scheduling, notes and billing together.'}
+          </p>
 
-          {/* Feature list */}
-          <div className="space-y-3 text-xs">
-            <div className="flex items-center gap-3">
-              {isClient ? (
-                <Users
-                  size={16}
+          {/* Feature cards */}
+          <div className="mt-9 grid gap-3 max-w-md">
+
+            <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10">
+              <div className="w-10 h-10 rounded-xl bg-rosewood/30 flex items-center justify-center">
+                {isClient ? (
+                  <Users
+                    size={18}
+                    className="text-blush"
+                  />
+                ) : (
+                  <HeartHandshake
+                    size={18}
+                    className="text-blush"
+                  />
+                )}
+              </div>
+
+              <div>
+                <p className="text-xs font-bold">
+                  {isClient
+                    ? 'Personal wellness portal'
+                    : 'Client-first management'}
+                </p>
+
+                <p className="text-[10px] text-misty mt-1">
+                  {isClient
+                    ? 'Your own connected client space.'
+                    : 'Keep your practice organised.'}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10">
+              <div className="w-10 h-10 rounded-xl bg-rosewood/30 flex items-center justify-center">
+                <Award
+                  size={18}
                   className="text-blush"
                 />
-              ) : (
-                <HeartHandshake
-                  size={16}
+              </div>
+
+              <div>
+                <p className="text-xs font-bold">
+                  {isClient
+                    ? 'Sessions & shared reflections'
+                    : 'Professional profile'}
+                </p>
+
+                <p className="text-[10px] text-misty mt-1">
+                  {isClient
+                    ? 'Stay connected with your therapist.'
+                    : 'Build your branded practice identity.'}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10">
+              <div className="w-10 h-10 rounded-xl bg-rosewood/30 flex items-center justify-center">
+                <Stethoscope
+                  size={18}
                   className="text-blush"
                 />
-              )}
+              </div>
 
-              <span className="text-vanilla/90">
-                {isClient
-                  ? 'Personal client wellness portal'
-                  : 'Client-first practice management'}
-              </span>
+              <div>
+                <p className="text-xs font-bold">
+                  {isClient
+                    ? 'Booking & communication'
+                    : 'Scheduling & documentation'}
+                </p>
+
+                <p className="text-[10px] text-misty mt-1">
+                  One connected experience.
+                </p>
+              </div>
             </div>
 
-            <div className="flex items-center gap-3">
-              <Award
-                size={16}
-                className="text-blush"
-              />
-
-              <span className="text-vanilla/90">
-                {isClient
-                  ? 'Sessions, reflections & shared notes'
-                  : 'Professional profile & branded link'}
-              </span>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <Stethoscope
-                size={16}
-                className="text-blush"
-              />
-
-              <span className="text-vanilla/90">
-                {isClient
-                  ? 'Booking, payments & communication'
-                  : 'Scheduling, documentation & billing'}
-              </span>
-            </div>
           </div>
         </div>
 
@@ -261,16 +302,19 @@ export const Register = () => {
         </p>
       </motion.section>
 
-      {/* RIGHT FORM */}
-      <section className="min-h-screen flex items-center justify-center p-6 sm:p-10 lg:p-12 bg-vanilla">
+      {/* ================= RIGHT FORM ================= */}
+      <section className="flex-1 min-h-screen flex items-center justify-center px-5 py-8 sm:px-8 lg:px-12">
+
         <motion.div
-          initial={{ opacity: 0, y: 18 }}
+          initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-lg"
+          transition={{ duration: 0.6 }}
+          className="w-full max-w-[500px]"
         >
+
           {/* Mobile logo */}
           <div className="lg:hidden flex items-center gap-3 mb-8">
-            <div className="w-11 h-11 rounded-2xl bg-midnight text-vanilla flex items-center justify-center shadow-md">
+            <div className="w-11 h-11 rounded-2xl bg-midnight flex items-center justify-center shadow-md">
               <span className="font-display font-black text-2xl text-blush">
                 U
               </span>
@@ -289,43 +333,59 @@ export const Register = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-3xl p-7 sm:p-10 border border-misty/30 card-shadow shadow-xl">
+          {/* Card */}
+          <div className="bg-white rounded-[2rem] p-7 sm:p-9 border border-misty/30 shadow-[0_20px_70px_rgba(47,68,84,0.12)]">
+
             {/* Header */}
             <div className="mb-7">
-              <p className="text-xs font-bold uppercase tracking-wider text-rosewood mb-1">
+              <div className="w-11 h-11 rounded-2xl bg-rosewood/10 flex items-center justify-center mb-5">
+                {isClient ? (
+                  <User
+                    size={19}
+                    className="text-rosewood"
+                  />
+                ) : (
+                  <Stethoscope
+                    size={19}
+                    className="text-rosewood"
+                  />
+                )}
+              </div>
+
+              <p className="text-[11px] uppercase tracking-[0.18em] font-extrabold text-rosewood">
                 {isClient
                   ? 'New client'
                   : 'New practice'}
               </p>
 
-              <h2 className="text-3xl font-bold font-display text-midnight tracking-tight">
+              <h2 className="font-display text-3xl sm:text-4xl font-black tracking-tight mt-1">
                 {isClient
-                  ? 'Create Client Account'
-                  : 'Create Therapist Account'}
+                  ? 'Create your account'
+                  : 'Create your practice'}
               </h2>
 
               <p className="text-xs text-midnight-muted mt-2">
                 {isClient
-                  ? 'Create your private client account to continue.'
-                  : 'Set up your workspace and your branded practice identity.'}
+                  ? 'Set up your private client space.'
+                  : 'Set up your professional Unfazed workspace.'}
               </p>
             </div>
 
-            {/* Form */}
             <form
               onSubmit={handleSubmit}
-              className="space-y-4 text-xs text-midnight"
+              className="space-y-4"
             >
-              {/* Full Name */}
+
+              {/* Name */}
               <div>
-                <label className="block font-bold mb-1.5">
-                  Full Name *
+                <label className="block text-[11px] font-extrabold uppercase tracking-wide mb-2 text-midnight-muted">
+                  Full name
                 </label>
 
-                <div className="relative">
+                <div className="relative group">
                   <User
-                    size={16}
-                    className="absolute left-3.5 top-1/2 -translate-y-1/2 text-midnight-muted"
+                    size={17}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-midnight-muted group-focus-within:text-rosewood transition-colors"
                   />
 
                   <input
@@ -343,21 +403,21 @@ export const Register = () => {
                         e.target.value
                       )
                     }
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-misty/40 focus:outline-none focus:border-rosewood"
+                    className="w-full h-12 pl-11 pr-4 rounded-2xl border border-misty/40 bg-white text-sm outline-none transition-all focus:border-rosewood focus:ring-4 focus:ring-rosewood/10 placeholder:text-midnight-muted/50"
                   />
                 </div>
               </div>
 
               {/* Email */}
               <div>
-                <label className="block font-bold mb-1.5">
-                  Email Address *
+                <label className="block text-[11px] font-extrabold uppercase tracking-wide mb-2 text-midnight-muted">
+                  Email address
                 </label>
 
-                <div className="relative">
+                <div className="relative group">
                   <Mail
-                    size={16}
-                    className="absolute left-3.5 top-1/2 -translate-y-1/2 text-midnight-muted"
+                    size={17}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-midnight-muted group-focus-within:text-rosewood transition-colors"
                   />
 
                   <input
@@ -371,22 +431,22 @@ export const Register = () => {
                         e.target.value
                       )
                     }
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-misty/40 focus:outline-none focus:border-rosewood"
+                    className="w-full h-12 pl-11 pr-4 rounded-2xl border border-misty/40 bg-white text-sm outline-none transition-all focus:border-rosewood focus:ring-4 focus:ring-rosewood/10 placeholder:text-midnight-muted/50"
                   />
                 </div>
               </div>
 
-              {/* Therapist qualification */}
+              {/* Qualification */}
               {!isClient && (
                 <div>
-                  <label className="block font-bold mb-1.5">
+                  <label className="block text-[11px] font-extrabold uppercase tracking-wide mb-2 text-midnight-muted">
                     Qualification
                   </label>
 
-                  <div className="relative">
+                  <div className="relative group">
                     <Award
-                      size={16}
-                      className="absolute left-3.5 top-1/2 -translate-y-1/2 text-midnight-muted"
+                      size={17}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-midnight-muted group-focus-within:text-rosewood transition-colors"
                     />
 
                     <input
@@ -399,23 +459,23 @@ export const Register = () => {
                           e.target.value
                         )
                       }
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-misty/40 focus:outline-none focus:border-rosewood"
+                      className="w-full h-12 pl-11 pr-4 rounded-2xl border border-misty/40 bg-white text-sm outline-none transition-all focus:border-rosewood focus:ring-4 focus:ring-rosewood/10 placeholder:text-midnight-muted/50"
                     />
                   </div>
                 </div>
               )}
 
-              {/* Client therapist slug */}
+              {/* Therapist branded link */}
               {isClient && (
                 <div>
-                  <label className="block font-bold mb-1.5">
-                    Therapist Branded Link *
+                  <label className="block text-[11px] font-extrabold uppercase tracking-wide mb-2 text-midnight-muted">
+                    Therapist branded link
                   </label>
 
-                  <div className="relative">
+                  <div className="relative group">
                     <Stethoscope
-                      size={16}
-                      className="absolute left-3.5 top-1/2 -translate-y-1/2 text-midnight-muted"
+                      size={17}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-midnight-muted group-focus-within:text-rosewood transition-colors"
                     />
 
                     <input
@@ -429,7 +489,7 @@ export const Register = () => {
                           e.target.value
                         )
                       }
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-misty/40 focus:outline-none focus:border-rosewood"
+                      className="w-full h-12 pl-11 pr-4 rounded-2xl border border-misty/40 bg-white text-sm outline-none transition-all focus:border-rosewood focus:ring-4 focus:ring-rosewood/10 placeholder:text-midnight-muted/50"
                     />
                   </div>
 
@@ -441,18 +501,22 @@ export const Register = () => {
 
               {/* Password */}
               <div>
-                <label className="block font-bold mb-1.5">
-                  Password *
+                <label className="block text-[11px] font-extrabold uppercase tracking-wide mb-2 text-midnight-muted">
+                  Password
                 </label>
 
-                <div className="relative">
+                <div className="relative group">
                   <Lock
-                    size={16}
-                    className="absolute left-3.5 top-1/2 -translate-y-1/2 text-midnight-muted"
+                    size={17}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-midnight-muted group-focus-within:text-rosewood transition-colors"
                   />
 
                   <input
-                    type="password"
+                    type={
+                      showPassword
+                        ? 'text'
+                        : 'password'
+                    }
                     required
                     minLength={6}
                     placeholder="At least 6 characters"
@@ -463,25 +527,45 @@ export const Register = () => {
                         e.target.value
                       )
                     }
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-misty/40 focus:outline-none focus:border-rosewood font-mono"
+                    className="w-full h-12 pl-11 pr-12 rounded-2xl border border-misty/40 bg-white text-sm outline-none transition-all focus:border-rosewood focus:ring-4 focus:ring-rosewood/10 placeholder:text-midnight-muted/50"
                   />
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setShowPassword(
+                        (prev) => !prev
+                      )
+                    }
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-midnight-muted hover:text-rosewood transition"
+                  >
+                    {showPassword ? (
+                      <EyeOff size={17} />
+                    ) : (
+                      <Eye size={17} />
+                    )}
+                  </button>
                 </div>
               </div>
 
-              {/* Confirm password */}
+              {/* Confirm */}
               <div>
-                <label className="block font-bold mb-1.5">
-                  Confirm Password *
+                <label className="block text-[11px] font-extrabold uppercase tracking-wide mb-2 text-midnight-muted">
+                  Confirm password
                 </label>
 
-                <div className="relative">
+                <div className="relative group">
                   <Lock
-                    size={16}
-                    className="absolute left-3.5 top-1/2 -translate-y-1/2 text-midnight-muted"
+                    size={17}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-midnight-muted group-focus-within:text-rosewood transition-colors"
                   />
 
                   <input
-                    type="password"
+                    type={
+                      showConfirmPassword
+                        ? 'text'
+                        : 'password'
+                    }
                     required
                     minLength={6}
                     placeholder="Re-enter your password"
@@ -492,8 +576,24 @@ export const Register = () => {
                         e.target.value
                       )
                     }
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-misty/40 focus:outline-none focus:border-rosewood font-mono"
+                    className="w-full h-12 pl-11 pr-12 rounded-2xl border border-misty/40 bg-white text-sm outline-none transition-all focus:border-rosewood focus:ring-4 focus:ring-rosewood/10 placeholder:text-midnight-muted/50"
                   />
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setShowConfirmPassword(
+                        (prev) => !prev
+                      )
+                    }
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-midnight-muted hover:text-rosewood transition"
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff size={17} />
+                    ) : (
+                      <Eye size={17} />
+                    )}
+                  </button>
                 </div>
               </div>
 
@@ -501,31 +601,45 @@ export const Register = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3.5 rounded-2xl bg-rosewood hover:bg-rosewood-hover disabled:opacity-60 text-white font-bold text-xs transition shadow-md shadow-rosewood/20 flex items-center justify-center gap-2 mt-2"
+                className="group w-full h-13 rounded-2xl bg-rosewood hover:bg-rosewood-hover disabled:opacity-60 text-white font-extrabold text-xs transition-all shadow-lg shadow-rosewood/20 flex items-center justify-center gap-2 mt-2"
               >
                 <span>
                   {loading
                     ? 'Creating account...'
                     : isClient
-                    ? 'Create Client Account'
-                    : 'Create Practice Account'}
+                      ? 'Create Client Account'
+                      : 'Create Practice Account'}
                 </span>
 
-                <ArrowRight size={14} />
+                <ArrowRight
+                  size={15}
+                  className="group-hover:translate-x-1 transition-transform"
+                />
               </button>
+
             </form>
 
-            {/* Sign in */}
-            <div className="pt-5 mt-6 border-t border-misty/20 text-center text-xs text-midnight-muted">
+            {/* Security */}
+            <div className="flex items-center justify-center gap-2 mt-5 text-[10px] text-midnight-muted">
+              <CheckCircle2
+                size={13}
+                className="text-rosewood"
+              />
+              Your account details are securely handled.
+            </div>
+
+            {/* Login */}
+            <div className="pt-6 mt-6 border-t border-misty/20 text-center text-xs text-midnight-muted">
               Already have an account?{' '}
 
               <Link
                 to={`/login?role=${selectedRole}`}
-                className="font-bold text-rosewood hover:underline"
+                className="font-extrabold text-rosewood hover:underline"
               >
                 Sign in
               </Link>
             </div>
+
           </div>
         </motion.div>
       </section>
